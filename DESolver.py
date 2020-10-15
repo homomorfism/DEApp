@@ -86,7 +86,6 @@ class DESolver:
         lte = np.zeros(shape=[self.N], dtype=np.float)
         y_appr[0] = self.y0
         lte[0] = self.y_exact[0]
-        # print('y0:', self.y0, 'y_exact[0]:', self.y_exact[0])
 
         for i in range(self.N - 1):
             k1 = y_deriv(self.x[i], y_appr[i])
