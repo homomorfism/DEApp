@@ -1,4 +1,6 @@
 import numpy as np
+import pyqtgraph as pg
+
 
 #
 # def y_exact(x):
@@ -8,23 +10,25 @@ import numpy as np
 # def y_deriv(x, y):
 #     return np.exp(2 * x) + np.exp(x) + y ** 2 - 2 * y * np.exp(x)
 
+class DE:
+    def __init__(self):
+        pass
 
-def y_deriv(x, y):
-    return (y ** 2 + x * y - x ** 2) / (x ** 2)
+    def y_deriv(self, x, y):
+        return (y ** 2 + x * y - x ** 2) / (x ** 2)
 
-
-def y_exact(x):
-    return x * (1 + (x ** 2) / 3) / (1 - (x ** 2) / 3)
+    def y_exact(self, x):
+        return x * (1 + (x ** 2) / 3) / (1 - (x ** 2) / 3)
 
 
 class DESolver:
     def __init__(self, x0, y0, N, interval):
+        self.DE = DE()
         self.x = np.linspace(x0, x0 + interval, N + 1)  # May be N
         self.N = N + 1
         self.y0 = y0
         self.h = interval / N
-        self.y_exact = y_exact(self.x)
-        # print("h:", self.h)
+        self.y_exact = self.DE.y_exact(self.x)
 
     def euler(self):
         y_appr = np.empty(shape=[self.N], dtype=np.float)
@@ -34,11 +38,11 @@ class DESolver:
         # print('y0:', self.y0, 'y_exact[0]:', self.y_exact[0])
 
         for i in range(self.N - 1):
-            k1 = y_deriv(self.x[i], y_appr[i])
+            k1 = self.DE.y_deriv(self.x[i], y_appr[i])
 
             y_appr[i + 1] = y_appr[i] + self.h * k1
 
-            k1 = y_deriv(self.x[i], self.y_exact[i])
+            k1 = self.DE.y_deriv(self.x[i], self.y_exact[i])
 
             lte[i + 1] = self.y_exact[i] + self.h * k1
 
@@ -58,18 +62,17 @@ class DESolver:
         # print('y0:', self.y0, 'y_exact[0]:', self.y_exact[0])
 
         for i in range(self.N - 1):
-            k1 = y_deriv(self.x[i], y_appr[i])
-            k2 = y_deriv(self.x[i] + self.h / 2, y_appr[i] + self.h * k1 / 2)
-            k3 = y_deriv(self.x[i] + self.h / 2, y_appr[i] + self.h * k2 / 2)
-            k4 = y_deriv(self.x[i] + self.h, y_appr[i] + self.h * k3)
+            k1 = self.DE.y_deriv(self.x[i], y_appr[i])
+            k2 = self.DE.y_deriv(self.x[i] + self.h / 2, y_appr[i] + self.h * k1 / 2)
+            k3 = self.DE.y_deriv(self.x[i] + self.h / 2, y_appr[i] + self.h * k2 / 2)
+            k4 = self.DE.y_deriv(self.x[i] + self.h, y_appr[i] + self.h * k3)
             # print(k1)
             y_appr[i + 1] = y_appr[i] + 1 / 6 * self.h * (k1 + 2 * k2 + 2 * k3 + k4)
 
-
-            k1 = y_deriv(self.x[i], self.y_exact[i])
-            k2 = y_deriv(self.x[i] + self.h / 2, self.y_exact[i] + self.h * k1 / 2)
-            k3 = y_deriv(self.x[i] + self.h / 2, self.y_exact[i] + self.h * k2 / 2)
-            k4 = y_deriv(self.x[i] + self.h, self.y_exact[i] + self.h * k3)
+            k1 = self.DE.y_deriv(self.x[i], self.y_exact[i])
+            k2 = self.DE.y_deriv(self.x[i] + self.h / 2, self.y_exact[i] + self.h * k1 / 2)
+            k3 = self.DE.y_deriv(self.x[i] + self.h / 2, self.y_exact[i] + self.h * k2 / 2)
+            k4 = self.DE.y_deriv(self.x[i] + self.h, self.y_exact[i] + self.h * k3)
             # print(k1)
             lte[i + 1] = self.y_exact[i] + 1 / 6 * self.h * (k1 + 2 * k2 + 2 * k3 + k4)
 
@@ -88,13 +91,13 @@ class DESolver:
         lte[0] = self.y_exact[0]
 
         for i in range(self.N - 1):
-            k1 = y_deriv(self.x[i], y_appr[i])
-            k2 = y_deriv(self.x[i] + self.h, y_appr[i] + self.h * k1)
+            k1 = self.DE.y_deriv(self.x[i], y_appr[i])
+            k2 = self.DE.y_deriv(self.x[i] + self.h, y_appr[i] + self.h * k1)
 
             y_appr[i + 1] = y_appr[i] + 0.5 * self.h * (k1 + k2)
 
-            k1 = y_deriv(self.x[i], self.y_exact[i])
-            k2 = y_deriv(self.x[i] + self.h, self.y_exact[i] + self.h * k1)
+            k1 = self.DE.y_deriv(self.x[i], self.y_exact[i])
+            k2 = self.DE.y_deriv(self.x[i] + self.h, self.y_exact[i] + self.h * k1)
 
             lte[i + 1] = self.y_exact[i] + 0.5 * self.h * (k1 + k2)
 
@@ -107,4 +110,18 @@ class DESolver:
         return self.x, y_appr, lte
 
 
+class Graph:
+    def __init__(self, title):
+        self.graph = pg.PlotWidget()
+        self.graph.setBackground('w')
+        self.graph.setTitle(title)
+        self.graph.addLegend()
 
+    def set_x_range(self, start, end):
+        self.graph.setXRange(start, end)
+
+    def plot(self, x, y, name, color):
+        self.graph.plot(x, y, name=name, pen=pg.mkPen(color, width=5))
+
+    def clear(self):
+        self.graph.clear()

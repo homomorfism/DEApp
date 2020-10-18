@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>884</width>
+    <width>853</width>
     <height>659</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="SolutionsTab">
      <property name="maximumSize">
@@ -143,6 +143,52 @@
      <attribute name="title">
       <string>Tab 2</string>
      </attribute>
+     <widget class="QWidget" name="horizontalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>841</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="graphErrorLayout"/>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="inputErrorLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>n0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_n0"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>N</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_N"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushErrorButton">
+           <property name="text">
+            <string>Recalculate</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -151,7 +197,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>884</width>
+     <width>853</width>
      <height>30</height>
     </rect>
    </property>
