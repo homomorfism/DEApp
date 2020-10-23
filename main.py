@@ -1,9 +1,10 @@
-from PyQt5 import QtWidgets
-from QtApp import Ui_MainWindow
 import sys
-import pyqtgraph as pg
+
 import numpy as np
+from PyQt5 import QtWidgets
+
 from DESolver import DESolver, DE, Graph
+from QtApp import Ui_MainWindow
 
 
 class GTEHelper:
@@ -68,7 +69,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graph1 = Graph(title="Graph plots")
         self.graph2 = Graph(title="Local truncation error")
 
-        self.graphError = Graph(title="Max local truncation error")
+        self.graphError = Graph(title="Max global truncation error")
 
         self.set_solution_tab()
         self.set_error_tab()
@@ -78,6 +79,8 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lineEdit_y0.setText('2.0')
         self.lineEdit_interval.setText('0.5')
         self.lineEdit_num_steps.setText('5')
+        self.lineEdit_n0.setText('1')
+        self.lineEdit_N.setText('10')
 
     def set_solution_tab(self):
 
@@ -165,4 +168,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print("AAaa")
     main()
