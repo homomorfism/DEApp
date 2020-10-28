@@ -11,6 +11,7 @@ class GTEHelper:
         self.x0 = x0
         self.y0 = y0
         self.X = X
+        self.DE = DE()
 
         assert n0 < N
 
@@ -21,7 +22,7 @@ class GTEHelper:
 
             x_appr, y_appr, _ = solver.euler()
 
-            y_exact = DE().y_exact(x_appr)
+            y_exact = self.DE.calculate_y_exact(x_appr)
 
             gte.append(np.max(np.abs(y_exact - y_appr)))
             steps.append(i)
@@ -35,7 +36,7 @@ class GTEHelper:
 
             x_appr, y_appr, _ = solver.improved()
 
-            y_exact = DE().y_exact(x_appr)
+            y_exact = self.DE.calculate_y_exact(x_appr)
 
             gte.append(np.max(np.abs(y_exact - y_appr)))
             steps.append(i)
@@ -49,7 +50,7 @@ class GTEHelper:
 
             x_appr, y_appr, _ = solver.runge_kutta()
 
-            y_exact = DE().y_exact(x_appr)
+            y_exact = self.DE.calculate_y_exact(x_appr)
 
             gte.append(np.max(np.abs(y_exact - y_appr)))
             steps.append(i)

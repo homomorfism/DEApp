@@ -76,7 +76,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.checkBox_exact.isChecked():
             x_ex = np.linspace(x0, x1)
-            y_ex = DE().y_exact(x_ex)
+            y_ex = DE().calculate_y_exact(x_ex)
 
             self.graph1.plot(x_ex, y_ex, name="Exact", color='b')
 
