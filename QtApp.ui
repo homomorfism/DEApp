@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="SolutionsTab">
      <property name="maximumSize">
@@ -79,12 +79,12 @@
          <item>
           <widget class="QLabel" name="label_interval">
            <property name="text">
-            <string>Interval</string>
+               <string>X (aka x1)</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_interval"/>
+             <widget class="QLineEdit" name="lineEdit_x1"/>
          </item>
          <item>
           <widget class="QLabel" name="label">

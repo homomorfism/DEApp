@@ -4,61 +4,8 @@ import numpy as np
 from PyQt5 import QtWidgets
 
 from DESolver import DESolver, DE, Graph
+from GTEHelper import GTEHelper
 from QtApp import Ui_MainWindow
-
-
-class GTEHelper:
-    def __init__(self, n0, N, x0, y0, X):
-        super().__init__()
-        self.n0 = n0
-        self.N = N
-        self.x0 = x0
-        self.y0 = y0
-        self.X = X
-
-        assert n0 < N
-
-    def calculate_euler(self):
-        gte, steps = [], []
-        for i in range(self.n0, self.N + 1):
-            solver = DESolver(self.x0, self.y0, i, self.X)
-
-            x_appr, y_appr, _ = solver.euler()
-
-            y_exact = DE().y_exact(x_appr)
-
-            gte.append(np.max(np.abs(y_exact - y_appr)))
-            steps.append(i)
-
-        return steps, gte
-
-    def calculate_improved(self):
-        gte, steps = [], []
-        for i in range(self.n0, self.N + 1):
-            solver = DESolver(self.x0, self.y0, i, self.X)
-
-            x_appr, y_appr, _ = solver.improved()
-
-            y_exact = DE().y_exact(x_appr)
-
-            gte.append(np.max(np.abs(y_exact - y_appr)))
-            steps.append(i)
-
-        return steps, gte
-
-    def calculate_runge(self):
-        gte, steps = [], []
-        for i in range(self.n0, self.N + 1):
-            solver = DESolver(self.x0, self.y0, i, self.X)
-
-            x_appr, y_appr, _ = solver.runge_kutta()
-
-            y_exact = DE().y_exact(x_appr)
-
-            gte.append(np.max(np.abs(y_exact - y_appr)))
-            steps.append(i)
-
-        return steps, gte
 
 
 class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -75,9 +22,9 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_error_tab()
 
         # Debug
-        self.lineEdit_x0.setText('1.0')
-        self.lineEdit_y0.setText('2.0')
-        self.lineEdit_interval.setText('0.5')
+        self.lineEdit_x0.setText('0.0')
+        self.lineEdit_y0.setText('0.0')
+        self.lineEdit_x1.setText('15.0')
         self.lineEdit_num_steps.setText('5')
         self.lineEdit_n0.setText('1')
         self.lineEdit_N.setText('10')
@@ -98,7 +45,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushErrorButton.clicked.connect(self.recalculate_button_error_handler)
 
     def recalculate_button_error_handler(self):
-        x0, y0, N, interval = self.read_input()
+        x0, y0, N, x1 = self.read_input()
 
         n0 = int(self.lineEdit_n0.text())
         N = int(self.lineEdit_N.text())
@@ -106,7 +53,7 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphError.clear()
         self.graphError.set_x_range(n0, N)
 
-        gteHelper = GTEHelper(n0, N, x0, y0, interval)
+        gteHelper = GTEHelper(n0, N, x0, y0, x1)
 
         gte, steps = gteHelper.calculate_euler()
         self.graphError.plot(gte, steps, name="Euler", color='b')
@@ -118,17 +65,17 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphError.plot(gte, steps, name="Runge_Kutta", color='g')
 
     def recalculate_button_handler(self):
-        x0, y0, N, interval = self.read_input()
+        x0, y0, N, x1 = self.read_input()
 
-        solver = DESolver(x0, y0, N, interval)
+        solver = DESolver(x0, y0, N, x1)
 
         self.graph1.clear()
         self.graph2.clear()
-        self.graph1.set_x_range(x0, x0 + interval)
-        self.graph2.set_x_range(x0, x0 + interval)
+        self.graph1.set_x_range(x0, x1)
+        self.graph2.set_x_range(x0, x1)
 
         if self.checkBox_exact.isChecked():
-            x_ex = np.linspace(x0, x0 + interval)
+            x_ex = np.linspace(x0, x1)
             y_ex = DE().y_exact(x_ex)
 
             self.graph1.plot(x_ex, y_ex, name="Exact", color='b')
@@ -155,9 +102,9 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         x0 = float(self.lineEdit_x0.text())
         y0 = float(self.lineEdit_y0.text())
         N = int(self.lineEdit_num_steps.text())
-        interval = float(self.lineEdit_interval.text())
+        x1 = float(self.lineEdit_x1.text())
 
-        return x0, y0, N, interval
+        return x0, y0, N, x1
 
 
 def main():
@@ -168,5 +115,5 @@ def main():
 
 
 if __name__ == '__main__':
-    print("AAaa")
+    print("Let's get it started")
     main()

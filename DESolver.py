@@ -15,19 +15,19 @@ class DE:
         pass
 
     def y_deriv(self, x, y):
-        return (y ** 2 + x * y - x ** 2) / (x ** 2)
+        return np.exp(2 * x) + np.exp(x) + y ** 2 - 2 * y * np.exp(x)
 
     def y_exact(self, x):
-        return x * (1 + (x ** 2) / 3) / (1 - (x ** 2) / 3)
+        return np.exp(x) - 1 / (x + 1)
 
 
 class DESolver:
-    def __init__(self, x0, y0, N, interval):
+    def __init__(self, x0, y0, N, x1):
         self.DE = DE()
-        self.x = np.linspace(x0, x0 + interval, N + 1)  # May be N
+        self.x = np.linspace(x0, x1, N + 1)  # May be N
         self.N = N + 1
         self.y0 = y0
-        self.h = interval / N
+        self.h = (x1 - x0) / N
         self.y_exact = self.DE.y_exact(self.x)
 
     def euler(self):
