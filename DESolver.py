@@ -24,15 +24,15 @@ class DE:
 class DESolver(DE):
     def __init__(self, x0, y0, N, x1):
         super().__init__()
-        self.x = np.linspace(x0, x1, N + 1)  # May be N
+        self.x = np.linspace(x0, x1, N + 1, dtype=np.float64)  # May be N
         self.N = N + 1
         self.y0 = y0
         self.h = (x1 - x0) / N
         self.y_exact = self.calculate_y_exact(self.x)
 
     def euler(self):
-        y_appr = np.empty(shape=[self.N], dtype=np.float)
-        lte = np.zeros(shape=[self.N], dtype=np.float)
+        y_appr = np.empty(shape=[self.N], dtype=np.float64)
+        lte = np.zeros(shape=[self.N], dtype=np.float64)
         y_appr[0] = self.y0
         lte[0] = self.y_exact[0]
         # print('y0:', self.y0, 'y_exact[0]:', self.y_exact[0])
@@ -58,8 +58,8 @@ class DESolver(DE):
         return self.x, y_appr, lte
 
     def runge_kutta(self):
-        y_appr = np.empty(shape=[self.N], dtype=np.float)
-        lte = np.zeros(shape=[self.N], dtype=np.float)
+        y_appr = np.empty(shape=[self.N], dtype=np.float64)
+        lte = np.zeros(shape=[self.N], dtype=np.float64)
         y_appr[0] = self.y0
         lte[0] = self.y_exact[0]
         # print('y0:', self.y0, 'y_exact[0]:', self.y_exact[0])
@@ -88,8 +88,8 @@ class DESolver(DE):
         return self.x, y_appr, lte
 
     def improved(self):
-        y_appr = np.empty(shape=[self.N], dtype=np.float)
-        lte = np.zeros(shape=[self.N], dtype=np.float)
+        y_appr = np.empty(shape=[self.N], dtype=np.float64)
+        lte = np.zeros(shape=[self.N], dtype=np.float64)
         y_appr[0] = self.y0
         lte[0] = self.y_exact[0]
 
