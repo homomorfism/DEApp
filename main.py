@@ -3,8 +3,8 @@ import sys
 import numpy as np
 from PyQt5 import QtWidgets
 
-from DESolver import DESolver, DE, Graph
-from GTEHelper import GTEHelper
+from DESolver import DE, Graph, ComputeRunge, ComputeImproved, ComputeEuler
+from GTEHelper import GTEEuler, GTERunge, GTEImproved
 from QtApp import Ui_MainWindow
 
 
@@ -24,10 +24,10 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # Debug
         self.lineEdit_x0.setText('0.0')
         self.lineEdit_y0.setText('0.0')
-        self.lineEdit_x1.setText('15.0')
-        self.lineEdit_num_steps.setText('5')
-        self.lineEdit_n0.setText('1')
-        self.lineEdit_N.setText('10')
+        self.lineEdit_x1.setText('5.0')
+        self.lineEdit_num_steps.setText('20')
+        self.lineEdit_n0.setText('20')
+        self.lineEdit_N.setText('100')
 
     def set_solution_tab(self):
 
@@ -53,21 +53,17 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphError.clear()
         self.graphError.set_x_range(n0, N)
 
-        gteHelper = GTEHelper(n0, N, x0, y0, x1)
-
-        gte, steps = gteHelper.calculate_euler()
+        gte, steps = GTEEuler(n0, N, x0, y0, x1).calculate_gte()
         self.graphError.plot(gte, steps, name="Euler", color='b')
 
-        gte, steps = gteHelper.calculate_improved()
+        gte, steps = GTEImproved(n0, N, x0, y0, x1).calculate_gte()
         self.graphError.plot(gte, steps, name="Improved", color='r')
 
-        gte, steps = gteHelper.calculate_runge()
+        gte, steps = GTERunge(n0, N, x0, y0, x1).calculate_gte()
         self.graphError.plot(gte, steps, name="Runge_Kutta", color='g')
 
     def recalculate_button_handler(self):
         x0, y0, N, x1 = self.read_input()
-
-        solver = DESolver(x0, y0, N, x1)
 
         self.graph1.clear()
         self.graph2.clear()
@@ -81,19 +77,19 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.graph1.plot(x_ex, y_ex, name="Exact", color='b')
 
         if self.checkBox_euler.isChecked():
-            x_appr, y_appr, lte = solver.euler()
+            x_appr, y_appr, lte = ComputeEuler(x0, y0, N, x1).compute()
 
             self.graph1.plot(x_appr, y_appr, name="Euler", color='r')
             self.graph2.plot(x_appr, lte, name="Euler", color='r')
 
         if self.checkBox_runge.isChecked():
-            x_appr, y_appr, lte = solver.runge_kutta()
+            x_appr, y_appr, lte = ComputeRunge(x0, y0, N, x1).compute()
 
             self.graph1.plot(x_appr, y_appr, name="Runge-Kutta", color='c')
             self.graph2.plot(x_appr, lte, name="Runge-Kutta", color='c')
 
         if self.checkBox_improved.isChecked():
-            x_appr, y_appr, lte = solver.improved()
+            x_appr, y_appr, lte = ComputeImproved(x0, y0, N, x1).compute()
 
             self.graph1.plot(x_appr, y_appr, name="Improved Euler", color='g')
             self.graph2.plot(x_appr, lte, name="Improved Euler", color='g')
