@@ -1,7 +1,7 @@
 import numpy as np
 
-from BaseClass import BaseGTEHelper
-from DESolver import DE, ComputeEuler, ComputeImproved, ComputeRunge
+from DEApp.BaseClass import BaseGTEHelper
+from DEApp.DESolver import DE, ComputeEuler, ComputeImproved, ComputeRunge
 
 
 class GTEEuler(BaseGTEHelper, DE):

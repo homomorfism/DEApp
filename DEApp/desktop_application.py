@@ -1,11 +1,9 @@
-import sys
-
 import numpy as np
 from PyQt5 import QtWidgets
 
-from DESolver import DE, Graph, ComputeRunge, ComputeImproved, ComputeEuler
-from GTEHelper import GTEEuler, GTERunge, GTEImproved
-from QtApp import Ui_MainWindow
+from DEApp.DESolver import DE, Graph, ComputeRunge, ComputeImproved, ComputeEuler
+from DEApp.GTEHelper import GTEEuler, GTERunge, GTEImproved
+from DEApp.QtApp import Ui_MainWindow
 
 
 class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -101,15 +99,3 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         x1 = float(self.lineEdit_x1.text())
 
         return x0, y0, N, x1
-
-
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    window = ExampleApp()
-    window.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    print("Let's get it started")
-    main()

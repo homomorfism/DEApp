@@ -1,7 +1,7 @@
 import numpy as np
 import pyqtgraph as pg
 
-from BaseClass import BaseDE, BaseDESolver, BaseDEMethod
+from DEApp.BaseClass import BaseDE, BaseDESolver, BaseDEMethod
 
 
 class DE(BaseDE):
